@@ -49,17 +49,36 @@ export function Landing({ lang }: { lang: Lang }) {
             className="goal-glow-in h-full w-full opacity-0"
           />
         </div>
-        {/* Balón (futuro logo) centrado y apoyado en la línea de gol; círculo real */}
-        <div className="pointer-events-none absolute bottom-[4%] left-1/2 -translate-x-1/2">
+        {/* Balón-logo de marca: monolínea estilo balón de fútbol (pentágono
+            central + costuras radiales). Centrado y apoyado en la línea de gol. */}
+        <div className="pointer-events-none absolute bottom-[1%] left-1/2 -translate-x-1/2">
           <svg
             aria-hidden
-            width="54"
-            height="54"
-            viewBox="0 0 44 44"
-            className="goal-glow-in opacity-0"
+            width="78"
+            height="78"
+            viewBox="0 0 64 64"
+            fill="none"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="ball-glow-in opacity-0"
           >
-            <circle cx="22" cy="22" r="19" stroke="var(--fg)" strokeWidth="2.5" fill="var(--bg-2)" />
-            <path d="M22 15 l7 5 -2.7 8.5 h-8.6 l-2.7 -8.5 z" fill="var(--fg)" opacity="0.85" />
+            <circle cx="32" cy="32" r="28" fill="var(--bg-2)" stroke="var(--accent)" strokeWidth="2.5" />
+            {/* costuras desde los vértices del pentágono hacia el borde */}
+            <g stroke="var(--accent)" strokeWidth="2">
+              <line x1="32" y1="22" x2="32" y2="5" />
+              <line x1="41.5" y1="28.9" x2="57.7" y2="23.7" />
+              <line x1="37.9" y1="40.1" x2="47.9" y2="53.8" />
+              <line x1="26.1" y1="40.1" x2="16.1" y2="53.8" />
+              <line x1="22.5" y1="28.9" x2="6.3" y2="23.7" />
+            </g>
+            {/* pentágono central (la marca) */}
+            <path
+              d="M32 22 L41.5 28.9 L37.9 40.1 L26.1 40.1 L22.5 28.9 Z"
+              fill="var(--accent)"
+              fillOpacity="0.92"
+              stroke="var(--accent)"
+              strokeWidth="2"
+            />
           </svg>
         </div>
         {/* Viñeta para mantener el texto legible sobre la red */}

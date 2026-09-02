@@ -23,7 +23,7 @@ export function GoalFrame({
       strokeLinejoin="round"
     >
       {/* Malla de la red */}
-      <g stroke="var(--accent)" strokeWidth="0.8" opacity="0.32" vectorEffect="non-scaling-stroke">
+      <g stroke="var(--accent)" strokeWidth="1" opacity="0.5" vectorEffect="non-scaling-stroke">
         {Array.from({ length: 11 }).map((_, i) => (
           <line
             key={`v${i}`}
@@ -50,8 +50,8 @@ export function GoalFrame({
       <path
         d="M40 200 V40 H360 V200"
         stroke="var(--accent)"
-        strokeWidth="3.5"
-        opacity="0.55"
+        strokeWidth="4"
+        opacity="0.75"
         vectorEffect="non-scaling-stroke"
       />
       {/* Suelo / línea de gol */}

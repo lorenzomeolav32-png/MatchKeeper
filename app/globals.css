@@ -142,12 +142,27 @@ body {
     transform: scale(1.04);
   }
   to {
-    opacity: 0.18;
+    opacity: 0.24;
     transform: scale(1);
   }
 }
 .goal-glow-in {
   animation: goal-glow-in 1.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* El balón-logo es el punto focal: aparece algo más marcado que la red. */
+@keyframes ball-glow-in {
+  from {
+    opacity: 0;
+    transform: scale(0.82) rotate(-8deg);
+  }
+  to {
+    opacity: 0.5;
+    transform: scale(1) rotate(0deg);
+  }
+}
+.ball-glow-in {
+  animation: ball-glow-in 1.4s cubic-bezier(0.22, 1, 0.36, 1) 0.35s forwards;
 }
 
 /* ── Línea-acento que "barre" bajo los títulos de sección ───────────────── */
@@ -193,12 +208,16 @@ body {
     transition: none;
   }
   .rise-in,
-  .goal-glow-in {
+  .goal-glow-in,
+  .ball-glow-in {
     animation: none;
     opacity: 1;
   }
   .goal-glow-in {
-    opacity: 0.18;
+    opacity: 0.24;
+  }
+  .ball-glow-in {
+    opacity: 0.5;
   }
   .sweep-heading::after {
     transition: none;
