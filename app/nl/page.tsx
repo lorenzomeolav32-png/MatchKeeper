@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   description: content.nl.meta.description,
   alternates: {
     canonical: "/nl",
-    languages: { en: "/", nl: "/nl" },
+    languages: { en: "/", nl: "/nl", fr: "/fr" },
   },
 };
 

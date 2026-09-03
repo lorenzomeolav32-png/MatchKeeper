@@ -5,7 +5,7 @@ import {
   JetBrains_Mono,
 } from "next/font/google";
 import "./globals.css";
-import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site";
+import { SITE_DESCRIPTION, SITE_NAME, SITE_TAGLINE, SITE_URL } from "@/lib/site";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,16 +27,16 @@ const jetbrains = JetBrains_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: `${SITE_NAME} — A goalkeeper for every match`,
+    default: `${SITE_NAME} — ${SITE_TAGLINE}`,
     template: `%s · ${SITE_NAME}`,
   },
   description: SITE_DESCRIPTION,
   alternates: {
     canonical: "/",
-    languages: { en: "/", nl: "/nl" },
+    languages: { en: "/", nl: "/nl", fr: "/fr" },
   },
   openGraph: {
-    title: `${SITE_NAME} — A goalkeeper for every match`,
+    title: `${SITE_NAME} — ${SITE_TAGLINE}`,
     description: SITE_DESCRIPTION,
     url: SITE_URL,
     siteName: SITE_NAME,
@@ -44,7 +44,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: `${SITE_NAME} — A goalkeeper for every match`,
+    title: `${SITE_NAME} — ${SITE_TAGLINE}`,
     description: SITE_DESCRIPTION,
   },
 };

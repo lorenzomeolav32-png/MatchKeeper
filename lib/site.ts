@@ -1,4 +1,6 @@
-export const SITE_NAME = "GK Service";
+export const SITE_NAME = "MatchKeeper";
+
+export const SITE_TAGLINE = "Every match deserves a real keeper";
 
 export const SITE_DESCRIPTION =
   "Find a goalkeeper for your amateur football match in Ghent. A community project connecting teams with available goalkeepers so no game gets cancelled.";

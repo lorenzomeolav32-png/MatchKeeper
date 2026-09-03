@@ -1,7 +1,13 @@
 import { FORMS } from "@/lib/site";
 
-export type Lang = "en" | "nl";
+export type Lang = "en" | "nl" | "fr";
 export type FormKey = keyof typeof FORMS;
+
+export const LANGS: { code: Lang; label: string; href: string }[] = [
+  { code: "en", label: "EN", href: "/" },
+  { code: "nl", label: "NL", href: "/nl" },
+  { code: "fr", label: "FR", href: "/fr" },
+];
 
 type ActionCard = {
   tag: string;
@@ -15,7 +21,7 @@ type LandingContent = {
   city: string;
   htmlLang: string;
   navPilot: string;
-  langSwitch: { label: string; aria: string };
+  langSwitch: { aria: string };
   hero: {
     badge: string;
     titleTop: string;
@@ -33,6 +39,11 @@ type LandingContent = {
   how: {
     heading: string;
     steps: { n: string; title: string; body: string }[];
+  };
+  coverage: {
+    heading: string;
+    body: string;
+    note: string;
   };
   takePart: {
     heading: string;
@@ -59,7 +70,7 @@ export const content: Record<Lang, LandingContent> = {
     city: "Ghent",
     htmlLang: "en",
     navPilot: "Ghent · pilot",
-    langSwitch: { label: "NL", aria: "Bekijk deze pagina in het Nederlands" },
+    langSwitch: { aria: "Change language" },
     hero: {
       badge: "Amateur football · Ghent",
       titleTop: "Never cancel a match",
@@ -83,9 +94,15 @@ export const content: Record<Lang, LandingContent> = {
       heading: "How it would work",
       steps: [
         { n: "01", title: "Tell us about the match", body: "The date, time and pitch. A minute, tops." },
-        { n: "02", title: "We find a goalkeeper", body: "We put you in touch with an available keeper from the Ghent community." },
-        { n: "03", title: "You play", body: "The keeper turns up, and you keep your booking and your match." },
+        { n: "02", title: "We notify available goalkeepers", body: "We reach out to keepers from the Ghent community who are free at that time." },
+        { n: "03", title: "A goalkeeper accepts", body: "Once someone confirms, you can stop waiting for a reply." },
+        { n: "04", title: "The match goes ahead", body: "The keeper turns up, and you keep your booking and your match." },
       ],
+    },
+    coverage: {
+      heading: "Every pitch, every format",
+      body: "The idea is to cover every kind of pitch (futsal, artificial turf, natural grass) and every match format.",
+      note: "It all depends on keeper availability, so don't expect full coverage across every service from day one.",
     },
     takePart: {
       heading: "Want to help us find out?",
@@ -145,7 +162,7 @@ export const content: Record<Lang, LandingContent> = {
     city: "Gent",
     htmlLang: "nl",
     navPilot: "Gent · pilot",
-    langSwitch: { label: "EN", aria: "View this page in English" },
+    langSwitch: { aria: "Taal wijzigen" },
     hero: {
       badge: "Amateurvoetbal · Gent",
       titleTop: "Zeg nooit meer een match af",
@@ -169,9 +186,15 @@ export const content: Record<Lang, LandingContent> = {
       heading: "Hoe het zou werken",
       steps: [
         { n: "01", title: "Vertel ons over de match", body: "De datum, het uur en het veld. Hooguit een minuut." },
-        { n: "02", title: "Wij zoeken een keeper", body: "We brengen je in contact met een beschikbare keeper uit de Gentse community." },
-        { n: "03", title: "Jij speelt", body: "De keeper komt opdagen, en jij houdt je reservatie en je match." },
+        { n: "02", title: "We verwittigen beschikbare keepers", body: "We nemen contact op met keepers uit de Gentse community die op dat moment vrij zijn." },
+        { n: "03", title: "Een keeper accepteert", body: "Zodra iemand bevestigt, hoef je niet meer op een antwoord te wachten." },
+        { n: "04", title: "De match gaat door", body: "De keeper komt opdagen, en jij houdt je reservatie en je match." },
       ],
+    },
+    coverage: {
+      heading: "Elk veld, elk format",
+      body: "Het idee is om elk soort veld te dekken (zaalvoetbal, kunstgras, natuurgras) en elk wedstrijdformat.",
+      note: "Het hangt allemaal af van de beschikbaarheid van keepers, dus verwacht niet vanaf dag één volledige dekking voor elke dienst.",
     },
     takePart: {
       heading: "Wil je ons helpen uitzoeken?",
@@ -225,6 +248,98 @@ export const content: Record<Lang, LandingContent> = {
       title: "GK Service — een keeper voor elke match in Gent",
       description:
         "We onderzoeken een makkelijke manier voor amateurploegen in Gent om een keeper te vinden, en voor keepers om meer te spelen. Laat weten of je het zou gebruiken.",
+    },
+  },
+  fr: {
+    city: "Gand",
+    htmlLang: "fr",
+    navPilot: "Gand · pilote",
+    langSwitch: { aria: "Changer de langue" },
+    hero: {
+      badge: "Football amateur · Gand",
+      titleTop: "Ne décommandez plus un match",
+      titleBottom: "parce que votre gardien manque à l'appel",
+      sub: "Nous explorons une idée pour le football à Gand : un moyen simple pour toute équipe ou groupe d'amis de trouver un gardien, que votre match ait été décommandé à la dernière minute ou que vous n'en ayez jamais eu un attitré, et pour les gardiens de jouer plus souvent. Avant de construire quoi que ce soit, nous voulons savoir si vous l'utiliseriez.",
+      ctaTeams: "Je l'utiliserais →",
+      ctaKeepers: "Je suis gardien",
+      note: "Quelques questions rapides. Vous nous aidez à décider si ça vaut la peine d'être construit.",
+    },
+    problem: {
+      heading: "Pas de gardien, moins bon match",
+      sub: "Deux problèmes différents, le même résultat : un moins bon match. Parfois votre gardien décommande à la dernière minute. Parfois votre groupe n'en a jamais eu un attitré.",
+      cards: [
+        { title: "Supplier dans le groupe", body: "Écrire à tout le monde en espérant une réponse avant le coup d'envoi." },
+        { title: "Poster sur des groupes Facebook", body: "Demander autour de vous et attendre, sans savoir qui va vraiment venir." },
+        { title: "Annuler le match", body: "Laisser tomber l'équipe, perdre le terrain réservé, et chercher une nouvelle date." },
+        { title: "Tourner dans les buts", body: "Toutes les 10 minutes, c'est au tour de quelqu'un d'autre. L'équipe perd sa structure à chaque fois, et comme c'est un joueur de champ qui dépanne, vous encaissez des buts qu'un vrai gardien aurait arrêtés." },
+      ],
+    },
+    how: {
+      heading: "Comment ça fonctionnerait",
+      steps: [
+        { n: "01", title: "Parlez-nous du match", body: "La date, l'heure et le terrain. Une minute, montre en main." },
+        { n: "02", title: "Nous prévenons les gardiens disponibles", body: "On contacte les gardiens de la communauté gantoise disponibles à ce moment-là." },
+        { n: "03", title: "Un gardien accepte", body: "Dès qu'un gardien confirme, vous n'avez plus besoin d'attendre une réponse." },
+        { n: "04", title: "Le match a lieu", body: "Le gardien se présente, et vous gardez votre réservation et votre match." },
+      ],
+    },
+    coverage: {
+      heading: "Tous les terrains, tous les formats",
+      body: "L'idée est de couvrir tous les types de terrain (futsal, gazon synthétique, gazon naturel) et tous les formats de match.",
+      note: "Tout dépend de la disponibilité des gardiens, donc ne vous attendez pas à une couverture complète pour chaque service dès le premier jour.",
+    },
+    takePart: {
+      heading: "Envie de nous aider à le savoir ?",
+      sub: "Nous décidons encore si ça vaut la peine. La meilleure façon de nous aider est de remplir le court formulaire qui vous correspond.",
+      cards: [
+        {
+          tag: "Équipes & joueurs",
+          title: "L'utiliseriez-vous ?",
+          body: "Que vous gériez une équipe ou que vous jouiez simplement entre amis, dites-nous si un service comme celui-ci vous aiderait. Deux minutes.",
+          cta: "Répondre au sondage →",
+          href: "teams",
+        },
+        {
+          tag: "Gardiens",
+          title: "Envie de jouer plus ?",
+          body: "Dites-nous à quel point vous seriez intéressé pour obtenir des matchs via nous et jouer pour des équipes qui cherchent un gardien.",
+          cta: "Nous le dire →",
+          href: "goalkeepers",
+        },
+        {
+          tag: "Liste des gardiens",
+          title: "Rejoindre la liste des gardiens",
+          body: "Prêt à être appelé ? Laissez vos coordonnées pour qu'on puisse vous contacter quand une équipe à proximité cherche un gardien.",
+          cta: "M'ajouter à la liste →",
+          href: "goalkeeperRegistration",
+        },
+      ],
+    },
+    status: {
+      kicker: "Où on en est",
+      heading: "Une idée récente, pas encore un service",
+      body: "On commence à Gand et on parle à de vraies équipes et de vrais gardiens. Rien ici ne tourne encore automatiquement. Ce sont quelques personnes qui essaient de résoudre un problème qu'on rencontre nous-mêmes régulièrement, et on veut voir si d'autres l'ont aussi.",
+      chips: [
+        "Gand — on commence ici",
+        "Anvers — peut-être plus tard",
+        "Bruxelles — peut-être plus tard",
+        "Bruges · Louvain — peut-être plus tard",
+      ],
+    },
+    finalCta: {
+      heading: "Aidez-nous à décider si ça devrait exister",
+      sub: "Choisissez le formulaire qui vous correspond. Ça ne prend que quelques minutes.",
+      buttons: [
+        { label: "Je l'utiliserais (équipes & joueurs)", href: "teams" },
+        { label: "Je suis gardien", href: "goalkeepers" },
+        { label: "M'ajouter à la liste des gardiens", href: "goalkeeperRegistration" },
+      ],
+    },
+    footerTagline: "Un projet communautaire · Gand, Belgique",
+    meta: {
+      title: "GK Service — un gardien pour chaque match à Gand",
+      description:
+        "Nous explorons un moyen simple pour les équipes amateurs de Gand de trouver un gardien, et pour les gardiens de jouer plus souvent. Dites-nous si vous l'utiliseriez.",
     },
   },
 };

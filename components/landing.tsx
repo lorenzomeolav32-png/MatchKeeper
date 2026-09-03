@@ -1,16 +1,15 @@
 import Link from "next/link";
 import { CTAButton } from "@/components/cta-button";
 import { GoalFrame } from "@/components/goal-frame";
+import { Logo } from "@/components/logo";
 import { PitchBackground } from "@/components/pitch-background";
 import { Reveal } from "@/components/reveal";
-import { content, type Lang } from "@/lib/content";
-import { FORMS, SITE_NAME } from "@/lib/site";
+import { content, LANGS, type Lang } from "@/lib/content";
+import { FORMS, SITE_TAGLINE } from "@/lib/site";
 
-/** Landing compartida por ambos idiomas. El contenido viene de lib/content.ts. */
+/** Landing compartida por los 3 idiomas. El contenido viene de lib/content.ts. */
 export function Landing({ lang }: { lang: Lang }) {
   const t = content[lang];
-  const otherLang: Lang = lang === "en" ? "nl" : "en";
-  const otherHref = otherLang === "en" ? "/" : "/nl";
 
   return (
     <main lang={t.htmlLang} className="relative">
@@ -18,20 +17,31 @@ export function Landing({ lang }: { lang: Lang }) {
 
       {/* ── Nav ────────────────────────────────────────────────────────────── */}
       <header className="mx-auto flex max-w-6xl items-center justify-between px-6 py-6">
-        <span className="font-display text-lg font-bold tracking-widest text-fg">
-          {SITE_NAME}
-        </span>
+        <Logo iconClassName="h-12 w-14" wordmarkClassName="text-2xl" />
         <div className="flex items-center gap-3">
           <span className="hidden rounded-full border border-line px-3 py-1 font-mono text-xs text-muted sm:inline">
             {t.navPilot}
           </span>
-          <Link
-            href={otherHref}
+          <div
             aria-label={t.langSwitch.aria}
-            className="rounded-full border border-line px-3 py-1 font-mono text-xs text-muted transition-colors hover:border-accent/50 hover:text-accent"
+            className="flex items-center gap-1 rounded-full border border-line px-1 py-1 font-mono text-xs"
           >
-            {t.langSwitch.label}
-          </Link>
+            {LANGS.map((l) =>
+              l.code === lang ? (
+                <span key={l.code} className="rounded-full bg-accent/10 px-2 py-1 text-accent">
+                  {l.label}
+                </span>
+              ) : (
+                <Link
+                  key={l.code}
+                  href={l.href}
+                  className="rounded-full px-2 py-1 text-muted transition-colors hover:text-accent"
+                >
+                  {l.label}
+                </Link>
+              )
+            )}
+          </div>
         </div>
       </header>
 
@@ -42,15 +52,14 @@ export function Landing({ lang }: { lang: Lang }) {
             a los bordes; se alarga por arriba (larguero por ENCIMA del badge, sin
             cortarlo) y por abajo (línea de suelo al fondo, sin hueco vacío).
             Sin balón: el marco/red se estiran, el balón se dibuja aparte. */}
-        <div className="pointer-events-none absolute -top-[17%] -bottom-[24%] -left-[12.5%] -right-[12.5%] overflow-hidden">
+        <div className="pointer-events-none absolute top-[1%] -bottom-[24%] left-[3%] right-[3%] overflow-hidden">
           <GoalFrame
             preserveAspectRatio="none"
-            showBall={false}
             className="goal-glow-in h-full w-full opacity-0"
           />
         </div>
-        {/* Balón-logo de marca: monolínea estilo balón de fútbol (pentágono
-            central + costuras radiales). Centrado y apoyado en la línea de gol. */}
+        {/* Guante de arquero, logo de marca: monolínea a juego con GoalFrame.
+            Centrado y apoyado en la línea de gol. */}
         <div className="pointer-events-none absolute bottom-[1%] left-1/2 -translate-x-1/2">
           <svg
             aria-hidden
@@ -62,23 +71,23 @@ export function Landing({ lang }: { lang: Lang }) {
             strokeLinejoin="round"
             className="ball-glow-in opacity-0"
           >
-            <circle cx="32" cy="32" r="28" fill="var(--bg-2)" stroke="var(--accent)" strokeWidth="2.5" />
-            {/* costuras desde los vértices del pentágono hacia el borde */}
-            <g stroke="var(--accent)" strokeWidth="2">
-              <line x1="32" y1="22" x2="32" y2="5" />
-              <line x1="41.5" y1="28.9" x2="57.7" y2="23.7" />
-              <line x1="37.9" y1="40.1" x2="47.9" y2="53.8" />
-              <line x1="26.1" y1="40.1" x2="16.1" y2="53.8" />
-              <line x1="22.5" y1="28.9" x2="6.3" y2="23.7" />
+            {/* puño */}
+            <rect x="22" y="46" width="26" height="12" rx="4" fill="var(--bg-2)" stroke="var(--accent)" strokeWidth="2.5" />
+            <line x1="22" y1="52" x2="48" y2="52" stroke="var(--accent)" strokeWidth="1.5" opacity="0.5" />
+            {/* pulgar */}
+            <rect x="10" y="33" width="13" height="12" rx="6" fill="var(--bg-2)" stroke="var(--accent)" strokeWidth="2.5" />
+            {/* palma */}
+            <rect x="18" y="28" width="34" height="22" rx="10" fill="var(--bg-2)" stroke="var(--accent)" strokeWidth="2.5" />
+            {/* dedos */}
+            <rect x="20" y="12" width="6" height="19" rx="3" fill="var(--bg-2)" stroke="var(--accent)" strokeWidth="2" />
+            <rect x="28" y="8" width="6" height="23" rx="3" fill="var(--bg-2)" stroke="var(--accent)" strokeWidth="2" />
+            <rect x="36" y="8" width="6" height="23" rx="3" fill="var(--bg-2)" stroke="var(--accent)" strokeWidth="2" />
+            <rect x="44" y="12" width="6" height="19" rx="3" fill="var(--bg-2)" stroke="var(--accent)" strokeWidth="2" />
+            {/* costuras de agarre en la palma */}
+            <g stroke="var(--accent)" strokeWidth="1.5" opacity="0.45">
+              <line x1="23" y1="36" x2="47" y2="36" />
+              <line x1="23" y1="41" x2="47" y2="41" />
             </g>
-            {/* pentágono central (la marca) */}
-            <path
-              d="M32 22 L41.5 28.9 L37.9 40.1 L26.1 40.1 L22.5 28.9 Z"
-              fill="var(--accent)"
-              fillOpacity="0.92"
-              stroke="var(--accent)"
-              strokeWidth="2"
-            />
           </svg>
         </div>
         {/* Viñeta para mantener el texto legible sobre la red */}
@@ -158,7 +167,7 @@ export function Landing({ lang }: { lang: Lang }) {
         <h2 className="font-display text-2xl font-semibold text-fg md:text-3xl">
           <span className="sweep-heading">{t.how.heading}</span>
         </h2>
-        <div className="mt-8 grid gap-4 md:grid-cols-3">
+        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {t.how.steps.map((s, i) => (
             <Reveal key={s.n} delay={i * 120} className="card-surface rounded-2xl p-6">
               <span className="font-mono text-sm text-accent">{s.n}</span>
@@ -166,6 +175,17 @@ export function Landing({ lang }: { lang: Lang }) {
               <p className="mt-2 text-sm text-muted">{s.body}</p>
             </Reveal>
           ))}
+        </div>
+      </Reveal>
+
+      {/* ── Coverage (todo tipo de cancha/formato, sujeto a disponibilidad) ─── */}
+      <Reveal as="section" className="mx-auto max-w-6xl px-6 pb-16">
+        <div className="card-surface rounded-3xl p-8 md:p-10">
+          <h2 className="font-display text-xl font-semibold text-fg md:text-2xl">
+            {t.coverage.heading}
+          </h2>
+          <p className="mt-3 max-w-2xl text-muted">{t.coverage.body}</p>
+          <p className="mt-3 max-w-2xl font-mono text-xs text-amber">{t.coverage.note}</p>
         </div>
       </Reveal>
 
@@ -252,7 +272,10 @@ export function Landing({ lang }: { lang: Lang }) {
       {/* ── Footer ─────────────────────────────────────────────────────────── */}
       <footer className="border-t border-line">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 px-6 py-8 text-sm text-muted sm:flex-row">
-          <span className="font-display tracking-widest">{SITE_NAME}</span>
+          <div className="flex flex-col items-center gap-1 sm:items-start">
+            <Logo iconClassName="h-7 w-8" wordmarkClassName="text-sm" />
+            <span className="font-mono text-[11px] text-muted">{SITE_TAGLINE}</span>
+          </div>
           <span className="font-mono text-xs">{t.footerTagline}</span>
         </div>
       </footer>
