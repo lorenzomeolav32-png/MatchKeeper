@@ -99,7 +99,7 @@ export function Landing({ lang }: { lang: Lang }) {
           }}
         />
 
-        <div className="relative mx-auto max-w-4xl px-6 pt-12 pb-24 text-center md:pt-20">
+        <div className="relative mx-auto max-w-4xl px-6 pt-24 pb-24 text-center md:pt-32">
           <p
             className="rise-in mb-5 inline-flex items-center gap-2 rounded-full border border-line px-3 py-1 font-mono text-xs uppercase tracking-widest text-accent"
             style={{ "--rise-delay": "80ms" } as React.CSSProperties}
