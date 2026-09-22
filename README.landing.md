@@ -5,10 +5,10 @@ Objetivo: explicar la propuesta, captar waitlist y llevar a los 3 Google Forms.
 
 **Pivot de mercado (2026-09)**: el piloto pasó de Gante (Bélgica) a Londres
 (UK). La versión trilingüe (EN/NL/FR) de Bélgica quedó archivada en
-`archive/belgium-ghent/` — el sitio activo es ahora solo en inglés. Los 3
-Google Forms de UK todavía no existen: hay un borrador de las preguntas en
-`research/surveys-uk-draft.md` y placeholders `FORMS.*` en `lib/site.ts` que
-hay que reemplazar una vez creados los forms reales.
+[archive/belgium-ghent/](archive/belgium-ghent/) — el sitio activo es ahora
+solo en inglés. Los 3 Google Forms de UK **ya están creados y conectados**
+en `lib/site.ts` (el borrador de preguntas usado para crearlos vive en
+`research/surveys-uk-draft.md`).
 
 ## Stack
 
@@ -21,41 +21,57 @@ hay que reemplazar una vez creados los forms reales.
 ## Ejecutar en local
 
 ```powershell
-cd GK_service
+cd MatchKeeper
 npm install
 npm run dev
 ```
 
 Abre http://localhost:3000
 
-## Tema "Night Pitch"
+## Tema "Daylight Pitch"
 
 Todo el tema está centralizado para poder cambiarlo fácil:
 
 - **Colores**: variables CSS en `app/globals.css` (`--bg`, `--accent`, `--amber`…).
-  Cambia esos tokens y cambia toda la web.
+  Fondo blanco cálido + acento naranja. Cambia esos tokens y cambia toda la web.
 - **Fuentes**: en un solo sitio, `app/layout.tsx`.
-- **Fondo (red de portería + foco de estadio)**: componente aislado
+- **Fondo (textura de red + halo naranja)**: componente aislado
   `components/pitch-background.tsx`.
-- **Textos y enlaces de forms**: `lib/site.ts`.
+- **Foto del hero**: `public/hero-keeper.jpg` (Pexels, uso libre), difuminada
+  hacia el fondo con una máscara CSS en `components/landing.tsx`.
+- **Textos y enlaces de forms**: `lib/content.ts` (copy) y `lib/site.ts`
+  (constantes + URLs de los 3 forms).
 
-## Estructura
+## Estructura de la landing (5 secciones)
+
+1. **Hero** — propuesta de valor + foto + 2 CTAs.
+2. **Benefits** — dos columnas (equipos vs. arqueros).
+3. **Story** — sección honesta en vez de prueba social falsa (sin
+   testimonios ni reseñas inventadas).
+4. **How it works** — flujo tipo marketplace: el equipo publica, los
+   arqueros se postulan, el equipo elige.
+5. **Final CTA** — bloque a sangre negra con los 3 formularios.
 
 ```
 app/
   layout.tsx        # fuentes + metadata
-  page.tsx          # secciones de la landing (PAS)
-  globals.css       # tema Night Pitch (tokens CSS)
+  page.tsx          # renderiza <Landing />
+  globals.css       # tema Daylight Pitch (tokens CSS)
 components/
+  landing.tsx           # las 5 secciones de la landing
   pitch-background.tsx  # fondo decorativo
-  cta-button.tsx        # botón CTA reutilizable
-  goal-frame.tsx        # ilustración SVG de la portería
+  cta-button.tsx         # botón CTA reutilizable (primary / ghost / invert)
+  goal-frame.tsx         # ilustración SVG de la portería
+  logo.tsx               # LogoMark + Logo (usa --accent)
 lib/
+  content.ts        # todo el copy de la landing
   site.ts           # constantes + URLs de los 3 forms
 ```
 
 ## Notas
 
 - Copy provisional (la propuesta de valor se refinará).
-- Posicionamiento honesto: proyecto en fase de validación en Ghent, no un
-  servicio ya operativo. Nada de buzzwords ni promesas exageradas.
+- Posicionamiento honesto: proyecto en fase de validación en Londres, no un
+  servicio ya operativo. Nada de buzzwords ni promesas exageradas — la
+  sección "Story" de la landing lo dice explícitamente (sin testimonios ni
+  reseñas inventadas).
