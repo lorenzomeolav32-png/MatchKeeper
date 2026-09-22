@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { ComponentProps } from "react";
 
-type Variant = "primary" | "ghost";
+type Variant = "primary" | "ghost" | "invert";
 
 type Props = ComponentProps<typeof Link> & {
   variant?: Variant;
@@ -12,9 +12,12 @@ const base =
 
 const variants: Record<Variant, string> = {
   primary:
-    "bg-accent text-accent-ink shadow-[0_0_24px_var(--accent-glow)] hover:bg-accent-strong hover:shadow-[0_0_36px_var(--accent-glow)]",
+    "bg-accent text-accent-ink shadow-[0_8px_24px_-10px_var(--accent-glow)] hover:bg-accent-strong hover:shadow-[0_12px_32px_-10px_var(--accent-glow)]",
   ghost:
-    "card-surface text-fg hover:border-accent/60 hover:text-accent",
+    "border border-line-strong bg-bg-2 text-fg hover:border-accent hover:text-accent-strong",
+  /** Para usar sobre superficies oscuras (ej. el bloque final-CTA a sangre negra). */
+  invert:
+    "border-2 border-bg/60 bg-bg/[0.08] text-bg hover:border-accent hover:bg-accent hover:text-accent-ink",
 };
 
 export function CTAButton({ variant = "primary", className = "", ...props }: Props) {

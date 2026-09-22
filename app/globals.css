@@ -1,25 +1,25 @@
 @import "tailwindcss";
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   THEME — "Night Pitch"
+   THEME — "Daylight Pitch"
    Todo el tema vive aquí. Para cambiar el look completo, edita estos tokens
    (no hace falta tocar los componentes). Los componentes solo usan las
    variables de abajo vía las utilidades de Tailwind (bg-bg, text-fg, etc.).
    ═══════════════════════════════════════════════════════════════════════════ */
 :root {
-  --bg: #0a0f0d; /* césped de noche, casi negro con tinte verde */
-  --bg-2: #0d1512;
-  --surface: rgba(255, 255, 255, 0.03);
-  --surface-2: rgba(255, 255, 255, 0.055);
-  --line: rgba(140, 180, 160, 0.12);
-  --line-strong: rgba(140, 180, 160, 0.26);
-  --fg: #eaf3ee;
-  --muted: #8ea79a;
-  --accent: #39ff88; /* verde césped eléctrico */
-  --accent-strong: #22e37a;
-  --accent-ink: #06140c; /* texto oscuro sobre botones verdes */
-  --accent-glow: rgba(57, 255, 136, 0.28);
-  --amber: #ffb020; /* foco de estadio — solo detalles puntuales */
+  --bg: #fbf7f3; /* off-white cálido, papel deportivo */
+  --bg-2: #ffffff;
+  --surface: rgba(20, 16, 12, 0.025);
+  --surface-2: rgba(20, 16, 12, 0.05);
+  --line: rgba(26, 22, 18, 0.12);
+  --line-strong: rgba(26, 22, 18, 0.26);
+  --fg: #17140f;
+  --muted: #6b645c;
+  --accent: #ff7a1a; /* naranja señal, mismo del logo */
+  --accent-strong: #e05d00;
+  --accent-ink: #ffffff; /* texto sobre botones naranjas */
+  --accent-glow: rgba(255, 122, 26, 0.3);
+  --amber: #a35a00; /* avisos — solo detalles puntuales */
 }
 
 @theme inline {
@@ -67,7 +67,7 @@ body {
 }
 
 .text-glow {
-  text-shadow: 0 0 26px var(--accent-glow);
+  text-shadow: none;
 }
 
 /* Malla de la portería como textura de fondo (líneas diagonales cruzadas). */
@@ -79,9 +79,9 @@ body {
 }
 
 .card-surface {
-  background-image: linear-gradient(180deg, var(--surface-2), transparent 62%);
-  background-color: color-mix(in oklab, var(--bg-2) 60%, transparent);
+  background-color: var(--bg-2);
   border: 1px solid var(--line);
+  box-shadow: 0 1px 2px rgba(20, 16, 12, 0.04);
 }
 
 /* Barrido de luz tipo foco de estadio, muy sutil. */
@@ -193,8 +193,8 @@ body {
 }
 .card-surface:hover {
   transform: translateY(-4px);
-  border-color: color-mix(in oklab, var(--accent) 45%, var(--line-strong));
-  box-shadow: 0 12px 40px -18px var(--accent-glow);
+  border-color: color-mix(in oklab, var(--accent) 55%, var(--line-strong));
+  box-shadow: 0 18px 40px -22px rgba(20, 16, 12, 0.35);
 }
 
 @media (prefers-reduced-motion: reduce) {

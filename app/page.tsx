@@ -3,14 +3,13 @@ import { Landing } from "@/components/landing";
 import { content } from "@/lib/content";
 
 export const metadata: Metadata = {
-  title: content.en.meta.title,
-  description: content.en.meta.description,
+  title: content.meta.title,
+  description: content.meta.description,
   alternates: {
     canonical: "/",
-    languages: { en: "/", nl: "/nl", fr: "/fr" },
   },
 };
 
 export default function Home() {
-  return <Landing lang="en" />;
+  return <Landing />;
 }

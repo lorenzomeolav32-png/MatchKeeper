@@ -3,19 +3,16 @@ export const SITE_NAME = "MatchKeeper";
 export const SITE_TAGLINE = "Every match deserves a real keeper";
 
 export const SITE_DESCRIPTION =
-  "Find a goalkeeper for your amateur football match in Ghent. A community project connecting teams with available goalkeepers so no game gets cancelled.";
+  "Find a goalkeeper for your amateur football match in London. A community project connecting teams with available goalkeepers so no game gets cancelled.";
 
-// Update this once the real domain is bought.
-export const SITE_URL = "https://gkservice.be";
+// Update this once the real domain is bought (e.g. matchkeeper.co.uk).
+export const SITE_URL = "https://matchkeeper.app";
 
-export const CITY = "Ghent";
+export const CITY = "London";
 
-// The three Google Forms used in the validation phase.
+// The three Google Forms used in the UK (London) validation phase.
 export const FORMS = {
-  teams:
-    "https://docs.google.com/forms/d/e/1FAIpQLSdg892YpGgwLlgc5ESKWGUAWUFXUdwZkAAV2lSCb_fj04GWPw/viewform",
-  goalkeepers:
-    "https://docs.google.com/forms/d/e/1FAIpQLSdbSFpazWcHyMFnRPUdZXs0qQwdzJQ7on6WkVLPSCrbP5V-Pw/viewform",
-  goalkeeperRegistration:
-    "https://docs.google.com/forms/d/e/1FAIpQLSe0Rl73fto6Y2Sqb-qfkgDjdVx5FZIQ_iRRYJ1-Pd1A3l0HQw/viewform",
+  teams: "https://forms.gle/c7HqnwWLMjvY6KRz8",
+  goalkeepers: "https://forms.gle/GjnP3poE6GTkQyNB6",
+  goalkeeperRegistration: "https://forms.gle/dPBqbu7D3QNBh9XS8",
 } as const;

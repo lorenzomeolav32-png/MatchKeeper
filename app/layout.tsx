@@ -34,7 +34,6 @@ export const metadata: Metadata = {
   description: SITE_DESCRIPTION,
   alternates: {
     canonical: "/",
-    languages: { en: "/", nl: "/nl", fr: "/fr" },
   },
   openGraph: {
     title: `${SITE_NAME} — ${SITE_TAGLINE}`,

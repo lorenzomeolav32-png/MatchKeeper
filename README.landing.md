@@ -1,7 +1,14 @@
-# GK Service — Landing (validation phase)
+# MatchKeeper — Landing (validation phase, UK pilot)
 
 Landing page para validar la idea de "portero a demanda" para fútbol amateur.
 Objetivo: explicar la propuesta, captar waitlist y llevar a los 3 Google Forms.
+
+**Pivot de mercado (2026-09)**: el piloto pasó de Gante (Bélgica) a Londres
+(UK). La versión trilingüe (EN/NL/FR) de Bélgica quedó archivada en
+`archive/belgium-ghent/` — el sitio activo es ahora solo en inglés. Los 3
+Google Forms de UK todavía no existen: hay un borrador de las preguntas en
+`research/surveys-uk-draft.md` y placeholders `FORMS.*` en `lib/site.ts` que
+hay que reemplazar una vez creados los forms reales.
 
 ## Stack
 
