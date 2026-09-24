@@ -16,3 +16,9 @@ export const FORMS = {
   goalkeepers: "https://forms.gle/GjnP3poE6GTkQyNB6",
   goalkeeperRegistration: "https://forms.gle/dPBqbu7D3QNBh9XS8",
 } as const;
+
+// MatchKeeper UK social accounts.
+export const SOCIALS = {
+  instagram: "https://www.instagram.com/matchkeeper.uk/",
+  facebook: "https://www.facebook.com/profile.php?id=61594915130066",
+} as const;

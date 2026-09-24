@@ -1,10 +1,10 @@
 import Image from "next/image";
 import { CTAButton } from "@/components/cta-button";
-import { Logo } from "@/components/logo";
+import { FacebookIcon, InstagramIcon, Logo } from "@/components/logo";
 import { PitchBackground } from "@/components/pitch-background";
 import { Reveal } from "@/components/reveal";
 import { content } from "@/lib/content";
-import { FORMS, SITE_TAGLINE } from "@/lib/site";
+import { FORMS, SITE_TAGLINE, SOCIALS } from "@/lib/site";
 
 const t = content;
 
@@ -285,10 +285,30 @@ export function Landing() {
 
       {/* ── Footer ─────────────────────────────────────────────────────────── */}
       <footer className="border-t border-line">
-        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 px-6 py-8 text-sm text-muted sm:flex-row">
+        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-6 py-8 text-sm text-muted sm:flex-row">
           <div className="flex flex-col items-center gap-1 sm:items-start">
             <Logo iconClassName="h-7 w-8" wordmarkClassName="text-sm" />
             <span className="font-mono text-[11px] text-muted">{SITE_TAGLINE}</span>
+          </div>
+          <div className="flex items-center gap-4">
+            <a
+              href={SOCIALS.instagram}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="MatchKeeper on Instagram"
+              className="text-muted transition-colors hover:text-accent-strong"
+            >
+              <InstagramIcon />
+            </a>
+            <a
+              href={SOCIALS.facebook}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="MatchKeeper on Facebook"
+              className="text-muted transition-colors hover:text-accent-strong"
+            >
+              <FacebookIcon />
+            </a>
           </div>
           <span className="font-mono text-xs">{t.footerTagline}</span>
         </div>
