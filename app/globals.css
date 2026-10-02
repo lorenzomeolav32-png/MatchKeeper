@@ -396,7 +396,7 @@ body {
 /* Todo lo que sigue va en `@layer components` a propósito: sin capa, estas
    reglas ganarían a las utilidades de Tailwind (CSS sin capa siempre vence a
    CSS en capa) y cosas como `hidden sm:inline-flex` dejarían de funcionar
-   sobre un `.pl-btn`. Dentro de la capa, la utilidad siempre manda. */
+   sobre un `.pl-cta`. Dentro de la capa, la utilidad siempre manda. */
 @layer components {
   /* Cambio de tema: transición corta para que no sea un corte seco, pero sin
      animar layout ni bloquear la interacción. */
@@ -584,62 +584,251 @@ body {
 }
 
 /* ── 9. Botones ──────────────────────────────────────────────────────────── */
-.pl-btn {
+/* Forma de ficha técnica en vez de píldora: dos esquinas biseladas, retícula en
+   las otras dos y una casilla de flecha. El contenedor (`.pl-cta-wrap`) lleva el
+   resplandor, la retícula y el foco, porque `clip-path` recorta el box-shadow y
+   el outline del propio botón. Todo en `@layer components`: una utilidad como
+   `hidden` o `w-full` puesta en el contenedor siempre gana. */
+.pl-cta-wrap {
+  /* Tamaño `lg` por defecto; `--md` y `--sm` lo reducen. */
+  --cut: 14px;
+  --cta-h: 60px;
+  --cta-pad: 1.75rem;
+  --cta-tile: 62px;
+  --cta-fs: 0.875rem;
+  --bk: 14px;
+  --bk-gap: 7px;
+  --bracket: var(--accent);
+  --glow: transparent;
+  --c-hi: transparent;
+  --c-div: rgba(0, 0, 0, 0.28);
   position: relative;
-  /* En `@layer components`, así que una utilidad como `hidden` gana a esto. */
   display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--s-2);
-  min-height: 44px; /* objetivo táctil mínimo */
-  border-radius: var(--r-full);
-  font-weight: 600;
-  letter-spacing: -0.005em;
+  padding: var(--bk-gap);
+  filter: drop-shadow(0 12px 26px var(--glow));
+}
+.pl-cta-wrap--md {
+  --cut: 10px;
+  --cta-h: 48px;
+  --cta-pad: 1.25rem;
+  --cta-tile: 48px;
+  --cta-fs: 0.8125rem;
+  --bk: 11px;
+  --bk-gap: 5px;
+}
+.pl-cta-wrap--sm {
+  --cut: 8px;
+  --cta-h: 40px;
+  --cta-pad: 1rem;
+  --cta-tile: 40px;
+  --cta-fs: 0.75rem;
+  --bk: 9px;
+  --bk-gap: 4px;
+}
+
+/* Variantes: solo cambian variables. `--c-edge` es el trazo, `--c-bg` el relleno. */
+.pl-cta-wrap--primary {
+  --glow: var(--accent-glow);
+  --c-bg: var(--accent);
+  --c-bg-h: var(--accent-strong);
+  --c-fg: var(--accent-ink);
+  --c-fg-h: var(--accent-ink);
+  --c-edge: var(--accent);
+  --c-edge-h: var(--accent-strong);
+  /* Naranja profundo, no negro: conserva la silueta sobre el fondo oscuro. */
+  --c-tile: color-mix(in oklab, var(--accent) 68%, #000);
+  --c-tile-h: color-mix(in oklab, var(--accent) 80%, #000);
+  --c-tile-fg: var(--accent-ink);
+  --c-hi: rgba(255, 255, 255, 0.35);
+}
+.pl-cta-wrap--secondary {
+  --c-bg: var(--bg-2);
+  --c-bg-h: color-mix(in oklab, var(--bg-2) 86%, var(--accent));
+  --c-fg: var(--fg);
+  --c-fg-h: var(--accent-strong);
+  --c-edge: var(--line-strong);
+  --c-edge-h: var(--accent);
+  --c-tile: transparent;
+  --c-tile-h: transparent;
+  --c-tile-fg: var(--accent);
+  --c-div: var(--line);
+}
+/* Sobre un bloque de acento (el naranja a sangre). */
+.pl-cta-wrap--onAccent {
+  --bracket: var(--accent-ink);
+  --c-bg: var(--accent-ink);
+  --c-bg-h: color-mix(in oklab, var(--accent-ink) 80%, #fff);
+  --c-fg: var(--accent);
+  --c-fg-h: var(--accent);
+  --c-edge: var(--accent-ink);
+  --c-edge-h: var(--accent-ink);
+  --c-tile: color-mix(in oklab, var(--accent-ink) 72%, var(--accent));
+  --c-tile-h: color-mix(in oklab, var(--accent-ink) 60%, var(--accent));
+  --c-tile-fg: var(--accent);
+}
+.pl-cta-wrap--quiet {
+  --bracket: var(--accent-ink);
+  --c-bg: var(--accent);
+  --c-bg-h: var(--accent-ink);
+  --c-fg: var(--accent-ink);
+  --c-fg-h: var(--accent);
+  --c-edge: color-mix(in oklab, var(--accent-ink) 45%, var(--accent));
+  --c-edge-h: var(--accent-ink);
+  --c-tile: transparent;
+  --c-tile-h: transparent;
+  --c-tile-fg: currentColor;
+  --c-div: color-mix(in oklab, var(--accent-ink) 30%, transparent);
+}
+
+/* Retícula en dos esquinas opuestas. En `lg` siempre visible; en el resto, al hover. */
+.pl-cta-wrap::before,
+.pl-cta-wrap::after {
+  content: "";
+  position: absolute;
+  width: var(--bk);
+  height: var(--bk);
+  border: 0 solid var(--bracket);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    transform var(--d-3) var(--e-out),
+    opacity var(--d-2) var(--e-out);
+}
+.pl-cta-wrap::before {
+  top: 0;
+  left: 0;
+  border-top-width: 1.5px;
+  border-left-width: 1.5px;
+}
+.pl-cta-wrap::after {
+  right: 0;
+  bottom: 0;
+  border-right-width: 1.5px;
+  border-bottom-width: 1.5px;
+}
+.pl-cta-wrap--lg::before,
+.pl-cta-wrap--lg::after,
+.pl-cta-wrap:hover::before,
+.pl-cta-wrap:hover::after {
+  opacity: 1;
+}
+.pl-cta-wrap:hover::before {
+  transform: translate(-3px, -3px);
+}
+.pl-cta-wrap:hover::after {
+  transform: translate(3px, 3px);
+}
+.pl-cta-wrap:has(.pl-cta:focus-visible) {
+  outline: 2px solid var(--bracket);
+  outline-offset: 3px;
+}
+[data-theme] .pl-cta:focus-visible {
+  outline: none;
+}
+
+.pl-cta {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex: 1;
+  align-items: stretch;
+  min-height: var(--cta-h);
+  overflow: hidden;
+  padding: 0;
+  border: 0;
+  color: var(--c-fg);
+  /* El trazo es el fondo del botón; el relleno (::before) queda 1px más adentro. */
+  background-color: var(--c-edge);
+  clip-path: polygon(
+    0 0,
+    calc(100% - var(--cut)) 0,
+    100% var(--cut),
+    100% 100%,
+    var(--cut) 100%,
+    0 calc(100% - var(--cut))
+  );
+  font-family: var(--font-chakra), var(--font-geist-sans), sans-serif;
+  font-size: var(--cta-fs);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
   white-space: nowrap;
   cursor: pointer;
-  overflow: hidden;
   transition:
     transform var(--d-2) var(--e-spring),
     background-color var(--d-2) var(--e-out),
-    border-color var(--d-2) var(--e-out),
-    color var(--d-2) var(--e-out),
-    box-shadow var(--d-3) var(--e-out);
+    color var(--d-2) var(--e-out);
 }
-.pl-btn:active {
-  transform: scale(0.972);
+.pl-cta::before {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  z-index: -1;
+  background-color: var(--c-bg);
+  /* El bisel interior se acorta 0.59px para quedar paralelo al exterior. */
+  clip-path: polygon(
+    0 0,
+    calc(100% - var(--cut) + 0.59px) 0,
+    100% calc(var(--cut) - 0.59px),
+    100% 100%,
+    calc(var(--cut) - 0.59px) 100%,
+    0 calc(100% - var(--cut) + 0.59px)
+  );
+  box-shadow: inset 0 1px 0 var(--c-hi);
+  transition: background-color var(--d-2) var(--e-out);
+}
+.pl-cta:hover {
+  color: var(--c-fg-h);
+  background-color: var(--c-edge-h);
+}
+.pl-cta:hover::before {
+  background-color: var(--c-bg-h);
+}
+.pl-cta:active {
+  transform: scale(0.985);
   transition-duration: var(--d-1);
 }
-/* Destello diagonal al pasar el ratón: el detalle "caro" del botón. */
-.pl-btn::after {
+.pl-cta:disabled {
+  opacity: 0.6;
+  cursor: progress;
+}
+/* Barrido de luz al pasar el ratón (solo transform, compuesto por GPU). */
+.pl-cta::after {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    105deg,
-    transparent 35%,
-    rgba(255, 255, 255, 0.28) 50%,
-    transparent 65%
-  );
+  background: linear-gradient(105deg, transparent 35%, rgba(255, 255, 255, 0.34) 50%, transparent 65%);
   transform: translateX(-120%);
-  transition: transform var(--d-5) var(--e-out);
   pointer-events: none;
 }
-.pl-btn:hover::after {
+.pl-cta:hover::after {
   transform: translateX(120%);
+  transition: transform 900ms var(--e-out);
 }
-.pl-btn__label {
-  position: relative;
-  z-index: 1;
-  display: inline-flex;
+.pl-cta__label {
+  display: flex;
+  flex: 1;
   align-items: center;
-  gap: var(--s-2);
+  justify-content: center;
+  padding: 0 var(--cta-pad);
 }
-/* La flecha avanza al hover: indica dirección, no solo decora. */
-.pl-btn__arrow {
-  transition: transform var(--d-2) var(--e-out);
+.pl-cta__icon {
+  display: grid;
+  place-items: center;
+  width: var(--cta-tile);
+  background-color: var(--c-tile);
+  color: var(--c-tile-fg);
+  box-shadow: inset 1px 0 0 var(--c-div);
+  transition: background-color var(--d-2) var(--e-out);
 }
-.pl-btn:hover .pl-btn__arrow {
-  transform: translateX(3px);
+.pl-cta:hover .pl-cta__icon {
+  background-color: var(--c-tile-h);
+}
+.pl-cta__icon svg {
+  transition: transform var(--d-3) var(--e-out);
+}
+.pl-cta:hover .pl-cta__icon svg {
+  transform: translateX(4px);
 }
 
 /* ── 10. Marquesina de confianza ─────────────────────────────────────────── */
@@ -763,6 +952,104 @@ body {
   text-underline-offset: 2px;
 }
 
+/* ── 12b. Formularios (login, registro, perfil) ──────────────────────────── */
+.pl-input {
+  width: 100%;
+  min-height: 48px;
+  padding: 0.7rem 1rem;
+  border-radius: var(--r-md);
+  border: 1px solid var(--line-strong);
+  background-color: var(--surface);
+  color: var(--fg);
+  /* 16px: por debajo, iOS Safari hace zoom al enfocar el campo. */
+  font-size: 1rem;
+  box-shadow: var(--ring-inset);
+  transition:
+    border-color var(--d-2) var(--e-out),
+    background-color var(--d-2) var(--e-out),
+    box-shadow var(--d-2) var(--e-out);
+}
+.pl-input::placeholder {
+  color: var(--muted);
+  opacity: 0.8;
+}
+.pl-input:hover {
+  border-color: color-mix(in oklab, var(--accent) 35%, var(--line-strong));
+}
+.pl-input:focus {
+  outline: none;
+  border-color: var(--accent);
+  background-color: var(--bg-2);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+/* Solo se marca como inválido tras interactuar (no al cargar la página). */
+.pl-input:user-invalid,
+.pl-input[aria-invalid="true"] {
+  border-color: var(--danger);
+}
+.pl-input:user-invalid:focus,
+.pl-input[aria-invalid="true"]:focus {
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--danger) 22%, transparent);
+}
+textarea.pl-input {
+  min-height: 7.5rem;
+  resize: vertical;
+  line-height: 1.55;
+}
+
+/* Opción seleccionable (radio nativo oculto + etiqueta): teclado y lector OK. */
+.pl-chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0.5rem 1rem;
+  border-radius: var(--r-full);
+  border: 1px solid var(--line-strong);
+  background-color: var(--surface);
+  color: var(--fg-2);
+  font-size: var(--t-sm);
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    transform var(--d-2) var(--e-spring),
+    border-color var(--d-2) var(--e-out),
+    background-color var(--d-2) var(--e-out),
+    color var(--d-2) var(--e-out);
+}
+.pl-chip:hover {
+  border-color: color-mix(in oklab, var(--accent) 45%, var(--line-strong));
+  color: var(--fg);
+}
+.pl-chip:active {
+  transform: scale(0.97);
+}
+input:checked + .pl-chip {
+  border-color: var(--accent);
+  background-color: var(--accent-soft);
+  color: var(--accent-strong);
+}
+input:focus-visible + .pl-chip {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/* Barra de progreso del perfil: solo anima transform (compuesta por GPU). */
+.pl-meter {
+  height: 6px;
+  overflow: hidden;
+  border-radius: var(--r-full);
+  background-color: var(--surface-2);
+}
+.pl-meter__fill {
+  height: 100%;
+  width: 100%;
+  transform-origin: left;
+  transform: scaleX(var(--pct, 0));
+  border-radius: inherit;
+  background-color: var(--accent);
+  transition: transform var(--d-4) var(--e-out);
+}
+
 /* ── 12c. FAQ: acordeón nativo `<details>` ───────────────────────────────── */
 .pl-faq summary::-webkit-details-marker,
 .pl-faq summary::marker {
@@ -825,12 +1112,8 @@ body {
   .pl-pulse::after {
     animation: none;
   }
-  .pl-lift:hover,
-  .pl-btn:active {
+  .pl-lift:hover {
     transform: none;
-  }
-  .pl-btn::after {
-    display: none;
   }
   .pl-underline::after {
     transition: none;
@@ -843,6 +1126,25 @@ body {
   }
   .pl-faq[open] > dd {
     animation: none;
+  }
+  .pl-chip:active {
+    transform: none;
+  }
+  .pl-cta::after {
+    display: none;
+  }
+  .pl-cta:active,
+  .pl-cta:hover .pl-cta__icon svg,
+  .pl-cta-wrap:hover::before,
+  .pl-cta-wrap:hover::after {
+    transform: none;
+  }
+  .pl-cta-wrap::before,
+  .pl-cta-wrap::after {
+    transition: none;
+  }
+  .pl-meter__fill {
+    transition: none;
   }
 }
 }

@@ -57,6 +57,9 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      // El script anti-flash de la plataforma escribe `data-theme` en <html>
+      // antes de hidratar; sin esto React lo reporta como desajuste.
+      suppressHydrationWarning
       className={`${geistSans.variable} ${chakra.variable} ${jetbrains.variable} h-full`}
     >
       <body className="min-h-full antialiased">

@@ -1,0 +1,1 @@
+ALTER TABLE "bookings" ALTER COLUMN "commission_pct" SET DEFAULT '15.00';

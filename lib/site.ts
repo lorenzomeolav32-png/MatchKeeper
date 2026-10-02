@@ -10,6 +10,10 @@ export const SITE_URL = "https://matchkeeper.app";
 
 export const CITY = "London";
 
+// Punto de contacto publicado en el footer y las paginas legales. Cambiar en
+// cuanto se de de alta el dominio/buzon definitivo.
+export const CONTACT_EMAIL = "hello@matchkeeper.app";
+
 // The three Google Forms used in the UK (London) validation phase.
 export const FORMS = {
   teams: "https://forms.gle/c7HqnwWLMjvY6KRz8",
