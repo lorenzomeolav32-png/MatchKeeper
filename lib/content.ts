@@ -29,9 +29,11 @@ type LandingContent = {
     sub: string;
     ctaTeams: string;
     ctaKeepers: string;
+    trust: string[];
     note: string;
     photoAlt: string;
   };
+  proofs: string[];
   benefits: {
     heading: string;
     sub: string;
@@ -67,15 +69,24 @@ export const content: LandingContent = {
   htmlLang: "en",
   navPilot: "Early access",
   hero: {
-    badge: "Amateur football",
+    badge: "London pilot · Early access",
     titleTop: "Missing a keeper?",
     titleBottom: "Let's sort it.",
-    sub: "One form, and we start looking for a goalkeeper for your match. No more begging the group chat an hour before kickoff.",
+    sub: "Tell us about your 5-a-side, 7s or 11s and we'll look for a goalkeeper near your pitch. No more begging the group chat an hour before kick-off.",
     ctaTeams: "I need a goalkeeper",
     ctaKeepers: "I'm a goalkeeper",
-    note: "We're building this right now and lining up our first keepers. Tell us what you need and you'll be first in line.",
+    trust: ["Free to ask", "Keepers near you", "Checked by a real person"],
+    note: "We're lining up our first keepers in London now. Tell us what you need and you'll be first in line.",
     photoAlt: "A goalkeeper leaping to make a save during an amateur football match",
   },
+  proofs: [
+    "5-a-side to 11-a-side",
+    "Keepers near your pitch",
+    "Every keeper checked by a person",
+    "Free for keepers to join",
+    "No obligation, no lock-in",
+    "London pilot",
+  ],
   benefits: {
     heading: "Two sides, one problem",
     sub: "Teams can't find a keeper. Keepers can't find a game. We're trying to close that gap.",

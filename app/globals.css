@@ -25,19 +25,36 @@
 @theme inline {
   --color-bg: var(--bg);
   --color-bg-2: var(--bg-2);
+  --color-bg-3: var(--bg-3);
   --color-surface: var(--surface);
   --color-surface-2: var(--surface-2);
   --color-line: var(--line);
   --color-line-strong: var(--line-strong);
   --color-fg: var(--fg);
+  --color-fg-2: var(--fg-2);
   --color-muted: var(--muted);
   --color-accent: var(--accent);
   --color-accent-strong: var(--accent-strong);
+  --color-accent-soft: var(--accent-soft);
   --color-accent-ink: var(--accent-ink);
   --color-amber: var(--amber);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-danger: var(--danger);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-jetbrains);
   --font-display: var(--font-chakra);
+}
+
+/* Fallbacks para los tokens nuevos en la landing pública (tema `:root`), que
+   no usa el sistema de la plataforma pero comparte esta hoja de estilos. */
+:root {
+  --bg-3: #f4ede5;
+  --fg-2: #3c3730;
+  --accent-soft: rgba(255, 122, 26, 0.12);
+  --success: #157f3d;
+  --warning: #a35a00;
+  --danger: #c02626;
 }
 
 * {
@@ -150,6 +167,15 @@ body {
   animation: goal-glow-in 1.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
+/* Hero de la landing: la foto se funde hacia el texto solo en escritorio. En
+   móvil la foto va encima del texto y no necesita máscara lateral. */
+@media (min-width: 768px) {
+  .landing-hero-mask {
+    -webkit-mask-image: linear-gradient(90deg, transparent 0%, rgba(0, 0, 0, 0.35) 30%, black 65%);
+    mask-image: linear-gradient(90deg, transparent 0%, rgba(0, 0, 0, 0.35) 30%, black 65%);
+  }
+}
+
 /* El balón-logo es el punto focal: aparece algo más marcado que la red. */
 @keyframes ball-glow-in {
   from {
@@ -226,3 +252,598 @@ body {
     transform: none;
   }
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   PLATFORM DESIGN SYSTEM — "Floodlight"
+   ───────────────────────────────────────────────────────────────────────────
+   Sistema de la PLATAFORMA (rutas autenticadas + /home). NO afecta a la
+   landing pública de "/", que sigue usando los tokens de `:root` de arriba.
+   Se activa poniendo data-theme="dark" | "light" en <html> (ver ThemeScope).
+
+   Escalas: color · elevación · radio · espacio · tipografía · movimiento.
+   Cambiar el look completo = editar estos tokens, nunca los componentes.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── 1. Color: tema oscuro (por defecto en plataforma) ───────────────────── */
+[data-theme="dark"] {
+  /* Superficies: escala de elevación, no colores sueltos. */
+  --bg: #0a0c0b; /* base — verde-carbón, no negro puro */
+  --bg-2: #111512; /* tarjeta */
+  --bg-3: #171c19; /* tarjeta elevada / hover */
+  --surface: rgba(255, 255, 255, 0.04);
+  --surface-2: rgba(255, 255, 255, 0.07);
+  --line: rgba(255, 255, 255, 0.08);
+  --line-strong: rgba(255, 255, 255, 0.16);
+
+  /* Texto: 3 niveles, todos ≥ 4.5:1 sobre --bg */
+  --fg: #f2f5f2; /* 18.2:1 */
+  --fg-2: #c6cdc7; /* 11.6:1 */
+  --muted: #8e9891; /*  6.0:1 */
+
+  --accent: #ff7a1a;
+  --accent-strong: #ff9647; /* en oscuro, el hover ACLARA */
+  --accent-soft: rgba(255, 122, 26, 0.13);
+  --accent-ink: #1a1005; /* ~6.5:1 sobre el naranja */
+  --accent-glow: rgba(255, 122, 26, 0.45);
+
+  --success: #3dd68c;
+  --warning: #ffc24b;
+  --danger: #ff6b6b;
+  --amber: var(--warning);
+
+  /* Elevación: en oscuro la profundidad viene de sombra + reflejo superior. */
+  --shadow-1: 0 1px 2px rgba(0, 0, 0, 0.5);
+  --shadow-2:
+    0 2px 4px rgba(0, 0, 0, 0.4), 0 8px 20px -12px rgba(0, 0, 0, 0.8);
+  --shadow-3:
+    0 4px 8px rgba(0, 0, 0, 0.4), 0 16px 32px -16px rgba(0, 0, 0, 0.85);
+  --shadow-4:
+    0 8px 16px rgba(0, 0, 0, 0.45), 0 32px 64px -24px rgba(0, 0, 0, 0.9);
+  --shadow-glow: 0 10px 40px -12px var(--accent-glow);
+  --ring-inset: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+
+  --grid-line: rgba(255, 255, 255, 0.045);
+  color-scheme: dark;
+}
+
+/* ── 2. Color: tema claro de plataforma ──────────────────────────────────── */
+[data-theme="light"] {
+  --bg: #faf7f3;
+  --bg-2: #ffffff;
+  --bg-3: #f2ece4;
+  --surface: rgba(20, 17, 13, 0.025);
+  --surface-2: rgba(20, 17, 13, 0.05);
+  --line: rgba(20, 17, 13, 0.1);
+  --line-strong: rgba(20, 17, 13, 0.2);
+
+  --fg: #14110d;
+  --fg-2: #3a342c;
+  --muted: #5f594f; /* 6.6:1 sobre --bg */
+
+  --accent: #ff7a1a;
+  --accent-strong: #c2410c; /* 5.1:1 sobre blanco — apto para texto */
+  --accent-soft: rgba(255, 122, 26, 0.12);
+  /* Tinta oscura sobre naranja: blanco sobre #ff7a1a da 2.6:1 y NO pasa
+     WCAG AA. Con esta tinta el contraste sube a ~6.5:1 en ambos temas. */
+  --accent-ink: #1a1005;
+  --accent-glow: rgba(255, 122, 26, 0.3);
+
+  --success: #12794a;
+  --warning: #9a5b00;
+  --danger: #be2c2c;
+  --amber: var(--warning);
+
+  --shadow-1: 0 1px 2px rgba(20, 17, 13, 0.05);
+  --shadow-2:
+    0 1px 2px rgba(20, 17, 13, 0.05), 0 8px 20px -14px rgba(20, 17, 13, 0.25);
+  --shadow-3:
+    0 2px 4px rgba(20, 17, 13, 0.05), 0 16px 32px -18px rgba(20, 17, 13, 0.3);
+  --shadow-4:
+    0 4px 8px rgba(20, 17, 13, 0.06), 0 32px 64px -28px rgba(20, 17, 13, 0.35);
+  --shadow-glow: 0 10px 36px -14px var(--accent-glow);
+  --ring-inset: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+
+  --grid-line: rgba(20, 17, 13, 0.05);
+  color-scheme: light;
+}
+
+/* ── 3. Escalas invariables (no dependen del tema) ───────────────────────── */
+[data-theme] {
+  /* Radio — 5 pasos, nunca valores sueltos */
+  --r-xs: 6px;
+  --r-sm: 10px;
+  --r-md: 14px;
+  --r-lg: 20px;
+  --r-xl: 28px;
+  --r-2xl: 36px;
+  --r-full: 999px;
+
+  /* Espacio — base 4px */
+  --s-1: 0.25rem;
+  --s-2: 0.5rem;
+  --s-3: 0.75rem;
+  --s-4: 1rem;
+  --s-5: 1.5rem;
+  --s-6: 2rem;
+  --s-7: 3rem;
+  --s-8: 4rem;
+  --s-9: 6rem;
+  --s-10: 8rem;
+
+  /* Tipografía — fluida, sin saltos bruscos entre breakpoints */
+  --t-xs: 0.75rem;
+  --t-sm: 0.875rem;
+  --t-base: 1rem;
+  --t-lg: 1.125rem;
+  --t-xl: clamp(1.25rem, 0.5vw + 1.1rem, 1.375rem);
+  --t-2xl: clamp(1.5rem, 1vw + 1.25rem, 1.75rem);
+  --t-3xl: clamp(1.625rem, 0.9vw + 1.35rem, 2rem);
+  --t-4xl: clamp(1.875rem, 1.2vw + 1.5rem, 2.5rem);
+  --t-5xl: clamp(2.25rem, 2vw + 1.6rem, 3.25rem);
+  --t-6xl: clamp(2.75rem, 3vw + 1.8rem, 4.25rem);
+
+  /* Movimiento — 5 duraciones, 3 curvas. Nada fuera de esta tabla. */
+  --d-1: 120ms; /* cambios de color, feedback inmediato */
+  --d-2: 200ms; /* hover, focus, micro-estados */
+  --d-3: 320ms; /* transformaciones de componente */
+  --d-4: 520ms; /* entradas de elemento */
+  --d-5: 760ms; /* entradas de sección */
+  --e-out: cubic-bezier(0.22, 1, 0.36, 1); /* por defecto */
+  --e-in-out: cubic-bezier(0.65, 0, 0.35, 1); /* movimientos simétricos */
+  --e-spring: cubic-bezier(0.34, 1.4, 0.64, 1); /* confirmaciones, press */
+}
+
+/* Todo lo que sigue va en `@layer components` a propósito: sin capa, estas
+   reglas ganarían a las utilidades de Tailwind (CSS sin capa siempre vence a
+   CSS en capa) y cosas como `hidden sm:inline-flex` dejarían de funcionar
+   sobre un `.pl-btn`. Dentro de la capa, la utilidad siempre manda. */
+@layer components {
+  /* Cambio de tema: transición corta para que no sea un corte seco, pero sin
+     animar layout ni bloquear la interacción. */
+  [data-theme] body,
+[data-theme] .pl-surface,
+[data-theme] .pl-glass {
+  transition:
+    background-color var(--d-3) var(--e-out),
+    border-color var(--d-3) var(--e-out),
+    color var(--d-3) var(--e-out);
+}
+
+/* ── 4. Fondo de plataforma: focos de estadio + rejilla de red ───────────── */
+.pl-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: -10;
+  overflow: hidden;
+  pointer-events: none;
+}
+.pl-backdrop__base {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(90% 60% at 50% -15%, var(--accent-soft) 0%, transparent 60%),
+    radial-gradient(70% 50% at 85% 10%, var(--surface) 0%, transparent 70%),
+    var(--bg);
+}
+/* Rejilla de red de portería: estructura, no decoración ruidosa. */
+.pl-backdrop__grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+  background-size: 72px 72px;
+  mask-image: radial-gradient(110% 80% at 50% 0%, #000 0%, transparent 75%);
+}
+/* Haz de foco lateral, lentísimo: da vida sin pedir atención. */
+.pl-backdrop__beam {
+  position: absolute;
+  top: -30%;
+  left: 50%;
+  width: 46rem;
+  height: 130%;
+  transform: translateX(-50%) rotate(14deg);
+  background: linear-gradient(
+    to bottom,
+    var(--accent-glow) 0%,
+    transparent 70%
+  );
+  filter: blur(90px);
+  opacity: 0.22;
+  animation: pl-beam 22s var(--e-in-out) infinite alternate;
+}
+@keyframes pl-beam {
+  from {
+    transform: translateX(-72%) rotate(14deg);
+    opacity: 0.14;
+  }
+  to {
+    transform: translateX(-28%) rotate(6deg);
+    opacity: 0.3;
+  }
+}
+
+/* ── 5. Superficies ──────────────────────────────────────────────────────── */
+.pl-surface {
+  background-color: var(--bg-2);
+  border: 1px solid var(--line);
+  border-radius: var(--r-xl);
+  box-shadow: var(--shadow-2), var(--ring-inset);
+}
+
+.pl-glass {
+  background-color: color-mix(in oklab, var(--bg-2) 62%, transparent);
+  backdrop-filter: blur(20px) saturate(140%);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-2), var(--ring-inset);
+}
+
+/* Elevación al hover: transform + sombra (ambas compuestas por GPU). */
+.pl-lift {
+  transition:
+    transform var(--d-3) var(--e-out),
+    border-color var(--d-2) var(--e-out),
+    box-shadow var(--d-3) var(--e-out);
+}
+.pl-lift:hover {
+  transform: translateY(-3px);
+  border-color: color-mix(in oklab, var(--accent) 45%, var(--line-strong));
+  box-shadow: var(--shadow-4), var(--ring-inset);
+}
+.pl-lift:active {
+  transform: translateY(-1px);
+  transition-duration: var(--d-1);
+}
+
+/* Borde que se ilumina siguiendo al cursor (se alimenta de --mx/--my). */
+.pl-spotlight {
+  position: relative;
+  isolation: isolate;
+}
+.pl-spotlight::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: radial-gradient(
+    18rem 18rem at var(--mx, 50%) var(--my, 0%),
+    var(--accent) 0%,
+    transparent 70%
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity var(--d-3) var(--e-out);
+  pointer-events: none;
+}
+.pl-spotlight:hover::before {
+  opacity: 0.85;
+}
+
+/* ── 6. Foco accesible, uniforme en toda la plataforma ───────────────────── */
+.pl-focus:focus-visible,
+[data-theme] a:focus-visible,
+[data-theme] button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: var(--r-sm);
+}
+
+/* ── 7. Tipografía de plataforma ─────────────────────────────────────────── */
+.pl-display {
+  font-family: var(--font-chakra), var(--font-geist-sans), sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 0.96;
+  text-wrap: balance; /* evita títulos huérfanos de una palabra */
+}
+.pl-eyebrow {
+  font-family: var(--font-jetbrains), ui-monospace, monospace;
+  font-size: var(--t-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--accent-strong);
+}
+.pl-prose {
+  line-height: 1.65;
+  text-wrap: pretty;
+  color: var(--muted);
+}
+/* Cifras tabulares para que los números no "bailen" al animarse. */
+.pl-tnum {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+}
+
+/* ── 8. Revelado en scroll (3 variantes, no una sola) ────────────────────── */
+.pl-reveal {
+  opacity: 0;
+  transform: translate3d(0, var(--pl-rise, 20px), 0) scale(var(--pl-scale, 1));
+  transition:
+    opacity var(--d-5) var(--e-out),
+    transform var(--d-5) var(--e-out);
+  transition-delay: var(--pl-delay, 0ms);
+  will-change: opacity, transform;
+}
+.pl-reveal[data-visible="true"] {
+  opacity: 1;
+  transform: none;
+  will-change: auto;
+}
+.pl-reveal--soft {
+  --pl-rise: 12px;
+}
+.pl-reveal--pop {
+  --pl-rise: 24px;
+  --pl-scale: 0.97;
+}
+
+/* ── 9. Botones ──────────────────────────────────────────────────────────── */
+.pl-btn {
+  position: relative;
+  /* En `@layer components`, así que una utilidad como `hidden` gana a esto. */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s-2);
+  min-height: 44px; /* objetivo táctil mínimo */
+  border-radius: var(--r-full);
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  white-space: nowrap;
+  cursor: pointer;
+  overflow: hidden;
+  transition:
+    transform var(--d-2) var(--e-spring),
+    background-color var(--d-2) var(--e-out),
+    border-color var(--d-2) var(--e-out),
+    color var(--d-2) var(--e-out),
+    box-shadow var(--d-3) var(--e-out);
+}
+.pl-btn:active {
+  transform: scale(0.972);
+  transition-duration: var(--d-1);
+}
+/* Destello diagonal al pasar el ratón: el detalle "caro" del botón. */
+.pl-btn::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 35%,
+    rgba(255, 255, 255, 0.28) 50%,
+    transparent 65%
+  );
+  transform: translateX(-120%);
+  transition: transform var(--d-5) var(--e-out);
+  pointer-events: none;
+}
+.pl-btn:hover::after {
+  transform: translateX(120%);
+}
+.pl-btn__label {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+}
+/* La flecha avanza al hover: indica dirección, no solo decora. */
+.pl-btn__arrow {
+  transition: transform var(--d-2) var(--e-out);
+}
+.pl-btn:hover .pl-btn__arrow {
+  transform: translateX(3px);
+}
+
+/* ── 10. Marquesina de confianza ─────────────────────────────────────────── */
+.pl-marquee {
+  display: flex;
+  width: max-content;
+  animation: pl-marquee 42s linear infinite;
+}
+.pl-marquee-mask {
+  mask-image: linear-gradient(
+    90deg,
+    transparent,
+    #000 8%,
+    #000 92%,
+    transparent
+  );
+}
+.pl-marquee-wrap:hover .pl-marquee {
+  animation-play-state: paused;
+}
+@keyframes pl-marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* ── 11. Estados de carga / vacío / éxito ────────────────────────────────── */
+.pl-skeleton {
+  position: relative;
+  overflow: hidden;
+  background: var(--surface-2);
+  border-radius: var(--r-md);
+}
+.pl-skeleton::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in oklab, var(--fg) 8%, transparent),
+    transparent
+  );
+  animation: pl-shimmer 1.6s var(--e-in-out) infinite;
+}
+@keyframes pl-shimmer {
+  to {
+    transform: translateX(100%);
+  }
+}
+
+/* Punto "en directo": pulso lento, no parpadeo. */
+.pl-pulse {
+  position: relative;
+}
+.pl-pulse::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: inherit;
+  animation: pl-pulse 2.4s var(--e-out) infinite;
+}
+@keyframes pl-pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  70%,
+  100% {
+    transform: scale(2.6);
+    opacity: 0;
+  }
+}
+
+/* ── 12. Subrayado de sección (evolución de .sweep-heading) ──────────────── */
+.pl-underline {
+  position: relative;
+  display: inline-block;
+}
+.pl-underline::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -0.45rem;
+  height: 2px;
+  width: 0;
+  border-radius: var(--r-full);
+  background: linear-gradient(90deg, var(--accent), transparent);
+  transition: width var(--d-5) var(--e-out) 120ms;
+}
+.pl-reveal[data-visible="true"] .pl-underline::after {
+  width: 4rem;
+}
+
+/* ── 12b. Contenido legal (Terms/Privacy/Safety): sin plugin typography,
+   estilos mínimos a mano para que h2/ul/strong/a lean bien en prosa larga. */
+.legal-copy h2 {
+  margin-top: var(--s-7);
+  font-family: var(--font-chakra), var(--font-geist-sans), sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--fg);
+  font-size: var(--t-2xl);
+}
+.legal-copy ul {
+  list-style: disc;
+  padding-left: 1.25em;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+}
+.legal-copy strong {
+  color: var(--fg);
+  font-weight: 600;
+}
+.legal-copy a {
+  color: var(--accent-strong);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* ── 12c. FAQ: acordeón nativo `<details>` ───────────────────────────────── */
+.pl-faq summary::-webkit-details-marker,
+.pl-faq summary::marker {
+  display: none;
+  content: "";
+}
+.pl-faq summary:hover .pl-faq__chevron {
+  color: var(--fg);
+}
+.pl-faq__chevron {
+  transition:
+    transform var(--d-3) var(--e-out),
+    color var(--d-2) var(--e-out);
+}
+.pl-faq[open] .pl-faq__chevron {
+  transform: rotate(180deg);
+}
+/* La respuesta entra desplazada: sin esto el contenido "salta" al abrirse. */
+.pl-faq[open] > dd {
+  animation: pl-faq-in var(--d-3) var(--e-out);
+}
+@keyframes pl-faq-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+
+/* ── 12d. Trazo a mano bajo una palabra del titular (se dibuja al cargar) ──── */
+.pl-swoosh path {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 5;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: pl-swoosh-draw 0.9s var(--e-out, cubic-bezier(0.22, 1, 0.36, 1)) 0.45s forwards;
+}
+@keyframes pl-swoosh-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* ── 13. Reduced motion: se desactiva TODO lo no esencial ──────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .pl-swoosh path {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+  .pl-reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .pl-backdrop__beam,
+  .pl-marquee,
+  .pl-skeleton::after,
+  .pl-pulse::after {
+    animation: none;
+  }
+  .pl-lift:hover,
+  .pl-btn:active {
+    transform: none;
+  }
+  .pl-btn::after {
+    display: none;
+  }
+  .pl-underline::after {
+    transition: none;
+  }
+  .pl-reveal[data-visible="true"] .pl-underline::after {
+    width: 4rem;
+  }
+  .pl-faq__chevron {
+    transition: none;
+  }
+  .pl-faq[open] > dd {
+    animation: none;
+  }
+}
+}
+

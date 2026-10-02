@@ -2,15 +2,32 @@ import Image from "next/image";
 import { CTAButton } from "@/components/cta-button";
 import { FacebookIcon, InstagramIcon, Logo } from "@/components/logo";
 import { PitchBackground } from "@/components/pitch-background";
+import {
+  CheckIcon,
+  GloveIcon,
+  LockIcon,
+  PinIcon,
+  ShieldCheckIcon,
+  StarIcon,
+} from "@/components/platform/icons";
+import { TrustMarquee } from "@/components/platform/trust-marquee";
 import { Reveal } from "@/components/reveal";
 import { content } from "@/lib/content";
 import { FORMS, SITE_TAGLINE, SOCIALS } from "@/lib/site";
 
 const t = content;
 
+const PROOF_ICONS = [StarIcon, PinIcon, ShieldCheckIcon, GloveIcon, LockIcon, PinIcon];
+const PROOFS = t.proofs.map((text, i) => ({ icon: PROOF_ICONS[i % PROOF_ICONS.length], text }));
+
 export function Landing() {
   return (
-    <main lang={t.htmlLang} className="relative">
+    // Texto oscuro sobre naranja: el blanco del tema `:root` da 2.6:1 y no pasa AA.
+    <main
+      lang={t.htmlLang}
+      className="relative"
+      style={{ "--accent-ink": "#1a1005" } as React.CSSProperties}
+    >
       <PitchBackground />
 
       {/* ── Nav ────────────────────────────────────────────────────────────── */}
@@ -23,40 +40,40 @@ export function Landing() {
       </header>
 
       {/* ── 1. Hero ────────────────────────────────────────────────────────── */}
+      {/* Móvil: la foto va arriba a sangre y el texto debajo sobre fondo sólido,
+          nunca encima del portero. Escritorio: foto a la derecha con máscara. */}
       <section className="relative overflow-hidden">
-        {/* Foto a la derecha, difuminada hacia el fondo con una máscara. */}
-        <div className="pointer-events-none absolute inset-y-0 right-0 w-full md:w-[66%]">
-          <div
-            className="relative h-full w-full"
-            style={{
-              WebkitMaskImage:
-                "linear-gradient(90deg, transparent 0%, rgba(0,0,0,0.35) 30%, black 65%)",
-              maskImage:
-                "linear-gradient(90deg, transparent 0%, rgba(0,0,0,0.35) 30%, black 65%)",
-            }}
-          >
+        <div className="pointer-events-none relative aspect-[5/4] w-full md:absolute md:inset-y-0 md:right-0 md:aspect-auto md:w-[66%]">
+          <div className="landing-hero-mask relative h-full w-full">
             <Image
               src="/hero-keeper.jpg"
               alt={t.hero.photoAlt}
               fill
               priority
               sizes="(max-width: 768px) 100vw, 66vw"
-              className="object-cover object-[70%_30%]"
+              className="object-cover object-[70%_50%] md:object-[70%_30%]"
             />
           </div>
+          <div
+            className="absolute inset-x-0 bottom-0 h-[42%] md:hidden"
+            style={{
+              background:
+                "linear-gradient(to top, var(--bg) 8%, color-mix(in oklab, var(--bg) 70%, transparent) 45%, transparent)",
+            }}
+          />
         </div>
 
-        {/* Scrim: garantiza contraste del texto sobre la foto en cualquier ancho. */}
+        {/* Scrim: garantiza contraste del texto sobre la foto en escritorio. */}
         <div
-          className="pointer-events-none absolute inset-0"
+          className="pointer-events-none absolute inset-0 hidden md:block"
           style={{
             background:
               "linear-gradient(90deg, var(--bg) 0%, var(--bg) 26%, color-mix(in oklab, var(--bg) 82%, transparent) 44%, transparent 68%)",
           }}
         />
 
-        <div className="relative mx-auto max-w-6xl px-6 pb-24 pt-16 md:pb-36 md:pt-24">
-          <div className="max-w-xl">
+        <div className="relative mx-auto -mt-16 max-w-6xl px-6 pb-16 md:mt-0 md:pb-36 md:pt-24">
+          <div className="mx-auto max-w-xl text-center md:mx-0 md:text-left">
             <p
               className="rise-in mb-5 inline-flex items-center gap-2 rounded-full border border-accent/30 bg-bg-2/70 px-3 py-1 font-mono text-xs uppercase tracking-widest text-accent-strong backdrop-blur"
               style={{ "--rise-delay": "80ms" } as React.CSSProperties}
@@ -72,17 +89,22 @@ export function Landing() {
               <span className="text-accent">{t.hero.titleBottom}</span>
             </h1>
             <p
-              className="rise-in mt-6 max-w-md text-lg leading-relaxed text-muted"
+              className="rise-in mx-auto mt-6 max-w-md text-lg leading-relaxed text-muted md:mx-0"
               style={{ "--rise-delay": "340ms" } as React.CSSProperties}
             >
               {t.hero.sub}
             </p>
 
             <div
-              className="rise-in mt-9 flex flex-wrap gap-3"
+              className="rise-in mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:justify-center md:justify-start"
               style={{ "--rise-delay": "480ms" } as React.CSSProperties}
             >
-              <CTAButton href={FORMS.teams} target="_blank" rel="noopener noreferrer">
+              <CTAButton
+                href={FORMS.teams}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="py-4 text-base sm:py-3 sm:text-sm"
+              >
                 {t.hero.ctaTeams}
               </CTAButton>
               <CTAButton
@@ -90,13 +112,27 @@ export function Landing() {
                 target="_blank"
                 rel="noopener noreferrer"
                 variant="ghost"
+                className="py-4 text-base sm:py-3 sm:text-sm"
               >
                 {t.hero.ctaKeepers}
               </CTAButton>
             </div>
+
+            <ul
+              className="rise-in mt-6 flex flex-wrap justify-center gap-x-5 gap-y-2 text-[13px] font-medium text-fg md:justify-start"
+              style={{ "--rise-delay": "560ms" } as React.CSSProperties}
+            >
+              {t.hero.trust.map((item) => (
+                <li key={item} className="flex items-center gap-1.5">
+                  <CheckIcon className="h-4 w-4 text-accent-strong" />
+                  {item}
+                </li>
+              ))}
+            </ul>
+
             <p
-              className="rise-in mt-5 max-w-sm font-mono text-xs leading-relaxed text-muted"
-              style={{ "--rise-delay": "600ms" } as React.CSSProperties}
+              className="rise-in mx-auto mt-5 max-w-sm font-mono text-xs leading-relaxed text-muted md:mx-0"
+              style={{ "--rise-delay": "640ms" } as React.CSSProperties}
             >
               {t.hero.note}
             </p>
@@ -104,7 +140,13 @@ export function Landing() {
         </div>
       </section>
 
-      {/* ── 2. Benefits (dos columnas: equipos / arqueros) ─────────────────── */}
+      <TrustMarquee items={PROOFS} />
+
+      {/* ── 2. How it works: justo después del hero, para que el objetivo quede
+          claro en el primer scroll. */}
+      <HowItWorks />
+
+      {/* ── 3. Benefits (dos columnas: equipos / arqueros) ───────────────── */}
       <Reveal as="section" className="mx-auto max-w-6xl px-6 py-20">
         <h2 className="font-display text-3xl font-bold tracking-tight text-fg md:text-4xl">
           <span className="sweep-heading">{t.benefits.heading}</span>
@@ -116,7 +158,7 @@ export function Landing() {
             <Reveal
               key={col.kicker}
               delay={colIndex * 140}
-              className={`flex flex-col rounded-3xl p-8 md:p-10 ${
+              className={`flex flex-col rounded-3xl p-6 sm:p-8 md:p-10 ${
                 colIndex === 0
                   ? "bg-fg text-bg"
                   : "card-surface"
@@ -213,38 +255,6 @@ export function Landing() {
         </div>
       </Reveal>
 
-      {/* ── 4. How it works + coverage (detalle de la oferta) ──────────────── */}
-      <Reveal as="section" className="mx-auto max-w-6xl px-6 py-20">
-        <h2 className="font-display text-3xl font-bold tracking-tight text-fg md:text-4xl">
-          <span className="sweep-heading">{t.how.heading}</span>
-        </h2>
-        <p className="mt-4 max-w-xl text-lg text-muted">{t.how.sub}</p>
-
-        <div className="mt-12 grid gap-px overflow-hidden rounded-3xl border border-line bg-line sm:grid-cols-2 lg:grid-cols-4">
-          {t.how.steps.map((s, i) => (
-            <Reveal key={s.n} delay={i * 110} className="bg-bg-2 p-7 md:p-8">
-              <span className="font-display text-4xl font-bold text-accent/35">{s.n}</span>
-              <h3 className="mt-4 font-display text-lg font-semibold text-fg">{s.title}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-muted">{s.body}</p>
-            </Reveal>
-          ))}
-        </div>
-
-        <p className="mt-6 max-w-2xl border-l-2 border-amber/40 pl-4 font-mono text-xs leading-relaxed text-amber">
-          {t.how.note}
-        </p>
-
-        <div className="card-surface mt-6 rounded-3xl p-8 md:p-10">
-          <h3 className="font-display text-xl font-bold text-fg md:text-2xl">
-            {t.how.coverage.heading}
-          </h3>
-          <p className="mt-3 max-w-2xl text-muted">{t.how.coverage.body}</p>
-          <p className="mt-4 max-w-2xl border-l-2 border-amber/40 pl-4 font-mono text-xs leading-relaxed text-amber">
-            {t.how.coverage.note}
-          </p>
-        </div>
-      </Reveal>
-
       {/* ── 5. Final CTA (los 3 formularios) ───────────────────────────────── */}
       <Reveal as="section" className="mx-auto max-w-6xl px-6 py-20">
         <div className="rounded-[2rem] bg-fg px-6 py-16 text-center md:px-12 md:py-20">
@@ -314,5 +324,48 @@ export function Landing() {
         </div>
       </footer>
     </main>
+  );
+}
+
+function HowItWorks() {
+  return (
+    <Reveal as="section" id="how-it-works" className="mx-auto max-w-6xl px-6 py-16 md:py-20">
+      <h2 className="font-display text-3xl font-bold tracking-tight text-fg md:text-4xl">
+        <span className="sweep-heading">{t.how.heading}</span>
+      </h2>
+      <p className="mt-4 max-w-xl text-lg text-muted">{t.how.sub}</p>
+
+      <div className="mt-10 grid gap-px overflow-hidden rounded-3xl border border-line bg-line sm:grid-cols-2 md:mt-12 lg:grid-cols-4">
+        {t.how.steps.map((s, i) => (
+          <Reveal
+            key={s.n}
+            delay={i * 110}
+            className="flex gap-5 bg-bg-2 p-6 sm:block md:p-8"
+          >
+            <span className="font-display text-3xl font-bold text-accent sm:text-4xl sm:text-accent/35">
+              {s.n}
+            </span>
+            <div>
+              <h3 className="font-display text-lg font-semibold text-fg sm:mt-4">{s.title}</h3>
+              <p className="mt-1.5 text-sm leading-relaxed text-muted sm:mt-2">{s.body}</p>
+            </div>
+          </Reveal>
+        ))}
+      </div>
+
+      <p className="mt-6 max-w-2xl border-l-2 border-amber/40 pl-4 font-mono text-xs leading-relaxed text-amber">
+        {t.how.note}
+      </p>
+
+      <div className="card-surface mt-6 rounded-3xl p-6 sm:p-8 md:p-10">
+        <h3 className="font-display text-xl font-bold text-fg md:text-2xl">
+          {t.how.coverage.heading}
+        </h3>
+        <p className="mt-3 max-w-2xl text-muted">{t.how.coverage.body}</p>
+        <p className="mt-4 max-w-2xl border-l-2 border-amber/40 pl-4 font-mono text-xs leading-relaxed text-amber">
+          {t.how.coverage.note}
+        </p>
+      </div>
+    </Reveal>
   );
 }

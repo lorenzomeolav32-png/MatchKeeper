@@ -9,13 +9,14 @@ type RevealProps = {
   /** Etiqueta a renderizar (section, div, li…). Por defecto div. */
   as?: ElementType;
   className?: string;
+  id?: string;
 };
 
 /**
  * Revela su contenido (fade + slide-up) cuando entra en el viewport.
  * Usa IntersectionObserver — sin librerías. Respeta prefers-reduced-motion vía CSS.
  */
-export function Reveal({ children, delay = 0, as, className = "" }: RevealProps) {
+export function Reveal({ children, delay = 0, as, className = "", id }: RevealProps) {
   const Tag = (as ?? "div") as ElementType;
   const ref = useRef<HTMLElement | null>(null);
   const [visible, setVisible] = useState(false);
@@ -41,6 +42,7 @@ export function Reveal({ children, delay = 0, as, className = "" }: RevealProps)
   return (
     <Tag
       ref={ref}
+      id={id}
       className={`reveal ${visible ? "is-visible" : ""} ${className}`.trim()}
       style={{ "--reveal-delay": `${delay}ms` } as React.CSSProperties}
     >
